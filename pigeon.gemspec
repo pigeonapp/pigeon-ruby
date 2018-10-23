@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pigeon/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'pigeon'
+  spec.name          = 'pigeon-ruby'
   spec.version       = Pigeon::VERSION
   spec.authors       = ['Pradeep Kumar']
   spec.email         = ['pradeep@keepworks.com']
