@@ -1,6 +1,6 @@
-require 'pigeon/version'
-require 'pigeon/config'
-require 'pigeon/client'
+require 'pigeon-ruby/version'
+require 'pigeon-ruby/config'
+require 'pigeon-ruby/client'
 
 module Pigeon
   @clients = Hash.new
