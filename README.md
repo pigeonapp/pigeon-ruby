@@ -18,17 +18,21 @@ Or install it yourself as:
 
     $ gem install pigeon
 
+
+## Configuration
+
+```ruby
+Pigeon.configure do |config|
+  config.public_key = ENV['PIGEON_PUBLIC_KEY']
+  config.private_key = ENV['PIGEON_PRIVATE_KEY']
+end
+```
+
 ## Usage
 
 ```ruby
-parcel = { to: 'john@example.com' }
-
-Pigeon.deliver('message-identifier', parcel)
+Pigeon.deliver('message-identifier', to: 'john@example.com')
 ```
-
-- Message identifier is used to identify the message. Grab this from your [Pigeon](https://pigeonapp.io) dashboard.
-- Parcel accepts `to`, `cc`, `bcc`, `data` and `attachments`.
-
 
 ### Parcel sample (Single recipient)
 
@@ -55,6 +59,8 @@ parcel = {
     }
   ]
 }
+
+Pigeon.deliver('message-identifier', parcel)
 ```
 
 ### Parcel sample (Multiple recipients)
@@ -76,6 +82,8 @@ parcels = [
     }
   }
 ]
+
+Pigeon.deliver('message-identifier', parcels)
 ```
 
 ## Development
