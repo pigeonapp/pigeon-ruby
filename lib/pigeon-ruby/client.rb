@@ -18,27 +18,31 @@ module Pigeon
         },
         body: {
           message_identifier: message_identifier,
-          parcels: process_attachments(parcels)
+          parcels: process_parcels(parcels)
         }
       })
     end
 
     private
 
-    def process_attachments(parcels)
+    def process_parcels(parcels)
       parcels = [parcels] if parcels.is_a? Hash
 
       parcels.each do |parcel|
-        (parcel[:attachments] || []).map do |attachment|
-          file = attachment[:file]
-          next unless File.file?(file)
+        (parcel[:attachments] || []).each do |attachment|
+          next unless File.file?(attachment[:file])
 
-          file = File.open(file) if file.is_a? String
-          attachment[:content] = Base64.strict_encode64(file.read)
-          attachment[:name] ||= File.basename(file, '.*')
-          attachment.delete(:file)
+          prepare_attachment_content(attachment)
         end
       end
+    end
+
+    def prepare_attachment_content(attachment)
+      file = attachment[:file]
+      file = File.open(file) if file.is_a? String
+      attachment[:content] = Base64.strict_encode64(file.read)
+      attachment[:name] ||= File.basename(file, '.*')
+      attachment.delete(:file)
     end
   end
 end

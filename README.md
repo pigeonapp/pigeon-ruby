@@ -19,6 +19,12 @@ Or install it yourself as:
     $ gem install pigeon
 
 
+## Usage
+
+```ruby
+Pigeon.deliver('message-identifier', to: 'john@example.com')
+```
+
 ## Configuration
 
 ```ruby
@@ -27,63 +33,44 @@ Pigeon.configure do |config|
   config.private_key = ENV['PIGEON_PRIVATE_KEY']
 end
 ```
+To integrate Pigeon with your Rails application, create a new initializer `config/initializers/pigeon.rb`
 
-## Usage
+## Examples
+
+### Multiple recipients
 
 ```ruby
-Pigeon.deliver('message-identifier', to: 'john@example.com')
+Pigeon.deliver('message-identifier', {
+  to: 'John Doe <john@example.com>',
+  cc: ['admin@example.com', 'sales@example.com>']
+})
 ```
 
-### Parcel sample (Single recipient)
+### Template variables
+
+Template variables are passed inside `:data`
 
 ```ruby
-parcel = {
-  to: 'John Doe <john@example.com>',
-  cc: [
-    'admin@example.com',
-    'Sales Team <sales@example.com>'
-  ],
-  data: {
-    # template variables are added here
-    name: 'John'
-  }
+Pigeon.deliver('message-identifier', {
+  to: 'john@example.com',
+  data: { name: 'John' }
+})
+```
+
+### Attachments support
+
+`:file` can be a local file path, remote URL, or a File object
+
+```ruby
+Pigeon.deliver('message-identifier', {
+  to: 'jane@example.com',
   attachments: [
-    # :file can be a remote URL, local file path, or a File object
     {
-      file: 'https://example.com/guide.pdf',
-      name: 'Guide'
-    },
-    {
-      file: '/path/to/logo.png',
-      name: 'Logo'
+      file: '/path/to/handbook.pdf',
+      name: 'Handbook'
     }
   ]
-}
-
-Pigeon.deliver('message-identifier', parcel)
-```
-
-### Parcel sample (Multiple recipients)
-
-```ruby
-parcels = [
-  {
-    to: 'John Doe <john@example.com>',
-    data: {
-      # template variables are added here
-      name: 'John'
-    }
-  },
-  {
-    to: 'Jane Doe <jane@example.com>',
-    data: {
-      # template variables are added here
-      name: 'Jane'
-    }
-  }
-]
-
-Pigeon.deliver('message-identifier', parcels)
+})
 ```
 
 ## Development
