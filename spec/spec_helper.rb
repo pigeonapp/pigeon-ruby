@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'pigeon'
+require 'pigeon-ruby'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

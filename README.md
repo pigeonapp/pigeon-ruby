@@ -18,10 +18,59 @@ Or install it yourself as:
 
     $ gem install pigeon
 
+
 ## Usage
 
+```ruby
+Pigeon.deliver('message-identifier', to: 'john@example.com')
 ```
-Pigeon.deliver('message-identifier', to: 'user@example.com')
+
+## Configuration
+
+```ruby
+Pigeon.configure do |config|
+  config.public_key = ENV['PIGEON_PUBLIC_KEY']
+  config.private_key = ENV['PIGEON_PRIVATE_KEY']
+end
+```
+To integrate Pigeon with your Rails application, create a new initializer `config/initializers/pigeon.rb`
+
+## Examples
+
+### Multiple recipients
+
+```ruby
+Pigeon.deliver('message-identifier', {
+  to: 'John Doe <john@example.com>',
+  cc: ['admin@example.com', 'sales@example.com>']
+})
+```
+
+### Template variables
+
+Template variables are passed inside `:data`
+
+```ruby
+Pigeon.deliver('message-identifier', {
+  to: 'john@example.com',
+  data: { name: 'John' }
+})
+```
+
+### Attachments support
+
+`:file` can be a local file path, remote URL, or a File object
+
+```ruby
+Pigeon.deliver('message-identifier', {
+  to: 'jane@example.com',
+  attachments: [
+    {
+      file: '/path/to/handbook.pdf',
+      name: 'Handbook'
+    }
+  ]
+})
 ```
 
 ## Development
@@ -32,7 +81,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pigeon-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/pigeonapp/pigeon-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Releasing
 
@@ -53,4 +102,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Pigeon project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/pigeon-ruby/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Pigeon project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/pigeonapp/pigeon-ruby/blob/master/CODE_OF_CONDUCT.md).
