@@ -33,7 +33,8 @@ Pigeon.configure do |config|
   config.private_key = ENV['PIGEON_PRIVATE_KEY']
 end
 ```
-To integrate Pigeon with your Rails application, create a new initializer `config/initializers/pigeon.rb`
+
+To integrate Pigeon with your Rails application, create a new initializer `config/initializers/pigeon.rb`.
 
 ## Examples
 
@@ -48,7 +49,7 @@ Pigeon.deliver('message-identifier', {
 
 ### Template variables
 
-Template variables are passed inside `:data`
+Template variables are passed inside `:data`.
 
 ```ruby
 Pigeon.deliver('message-identifier', {
@@ -59,7 +60,7 @@ Pigeon.deliver('message-identifier', {
 
 ### Attachments support
 
-`:file` can be a local file path, remote URL, or a File object
+`:file` can be a local file path, remote URL, or a File object.
 
 ```ruby
 Pigeon.deliver('message-identifier', {
