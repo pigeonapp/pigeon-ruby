@@ -14,4 +14,8 @@ module Pigeon
   def self.deliver(message_identifier, parcels = nil)
     @clients[:default].deliver(message_identifier, parcels)
   end
+
+  def self.track(event, data)
+    @clients[:default].track(event, data)
+  end
 end

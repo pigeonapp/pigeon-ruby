@@ -5,20 +5,27 @@ module Pigeon
     include HTTParty
 
     def initialize(config)
-      @config = config
-
-      self.class.base_uri(@config.base_uri || 'https://api.pigeonapp.io/v1')
+      self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
+      self.class.headers({
+        'X-Public-Key' => config.public_key,
+        'X-Private-Key' => config.private_key
+      })
     end
 
     def deliver(message_identifier, parcels = nil)
       self.class.post('/deliveries', {
-        headers: {
-          'X-Public-Key' => @config.public_key,
-          'X-Private-Key' => @config.private_key
-        },
         body: {
           message_identifier: message_identifier,
           parcels: process_parcels(parcels)
+        }
+      })
+    end
+
+    def track(event, data = {})
+      self.class.post('/event_logs', {
+        body: {
+          event: event,
+          data: data
         }
       })
     end
