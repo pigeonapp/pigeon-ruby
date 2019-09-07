@@ -7,7 +7,7 @@ Pigeon SDK for Ruby
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'pigeon'
+gem 'pigeon-ruby'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install pigeon
+    $ gem install pigeon-ruby
 
 
 ## Usage
