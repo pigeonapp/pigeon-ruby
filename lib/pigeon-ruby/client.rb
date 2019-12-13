@@ -3,6 +3,7 @@ require 'httparty'
 module Pigeon
   class Client
     include HTTParty
+    include Pigeon::Utils
 
     def initialize(config)
       self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
@@ -30,6 +31,18 @@ module Pigeon
       })
     end
 
+    def identify(attrs = {})
+      self.class.post('/customers', {
+        body: process_identify_attributes(attrs)
+      })
+    end
+
+    def add_contact(customer_id, attrs = {})
+      self.class.post('/contacts', {
+        body: process_contact_attributes(customer_id, attrs)
+      })
+    end
+
     private
 
     def process_parcels(parcels)
@@ -50,6 +63,29 @@ module Pigeon
       attachment[:content] = Base64.strict_encode64(file.read)
       attachment[:name] ||= File.basename(file, '.*')
       attachment.delete(:file)
+    end
+
+    def process_identify_attributes(attrs)
+      symbolize_keys! attrs
+      traits = attrs[:traits] || {}
+
+      raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
+
+      if !attrs[:uid] && !attrs[:anonymous_uid]
+        raise ArgumentError, 'You must supply either uid or anonymous_uid.'
+      end
+
+      attrs
+    end
+
+    def process_contact_attributes(uid, attrs)
+      symbolize_keys! attrs
+
+      check_presence!(uid, 'Customer ID')
+      check_presence!(attrs[:platforrm], 'Platform')
+      check_presence!(attrs[:token], 'Token')
+
+      attrs[:uid] = uid
     end
   end
 end
