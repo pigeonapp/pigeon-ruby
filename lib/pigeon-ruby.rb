@@ -18,4 +18,12 @@ module Pigeon
   def self.track(event, data)
     @clients[:default].track(event, data)
   end
+
+  def self.identify(attrs = {})
+    @clients[:default].identify(attrs)
+  end
+
+  def self.add_contact(uid, attrs = {})
+    @clients[:default].add_contact(uid, attrs)
+  end
 end
