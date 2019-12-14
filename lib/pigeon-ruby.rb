@@ -26,4 +26,8 @@ module Pigeon
   def self.add_contact(uid, attrs = {})
     @clients[:default].add_contact(uid, attrs)
   end
+
+  def self.generate_token(uid)
+    @clients[:default].generate_token(uid)
+  end
 end

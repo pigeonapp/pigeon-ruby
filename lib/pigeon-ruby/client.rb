@@ -1,11 +1,17 @@
 require 'httparty'
+require 'openssl'
+require 'securerandom'
 
 module Pigeon
   class Client
     include HTTParty
-    include Pigeon::Utils
 
     def initialize(config)
+      check_presence!(config.public_key, 'Pigeon Public Key')
+      check_presence!(config.private_key, 'Pigeon Private Key')
+
+      @config = config
+
       self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
       self.class.headers({
         'X-Public-Key' => config.public_key,
@@ -43,6 +49,13 @@ module Pigeon
       })
     end
 
+    def generate_token(customer_id)
+      cipher = OpenSSL::Cipher::AES256.new :CBC
+      cipher.encrypt
+      cipher.key = OpenSSL::Digest::SHA256.digest @config.private_key
+      cipher.update(customer_id) + cipher.final
+    end
+
     private
 
     def process_parcels(parcels)
@@ -72,7 +85,7 @@ module Pigeon
       raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
 
       if !attrs[:uid] && !attrs[:anonymous_uid]
-        raise ArgumentError, 'You must supply either uid or anonymous_uid.'
+        attrs[:anonymous_uid] = generate_anonymous_uid
       end
 
       attrs
@@ -86,6 +99,22 @@ module Pigeon
       check_presence!(attrs[:token], 'Token')
 
       attrs[:uid] = uid
+    end
+
+    def generate_anonymous_uid
+      SecureRandom.uuid
+    end
+
+    def symbolize_keys!(hash)
+      new_hash = hash.each_with_object({}) do |(k, v), memo|
+        memo[k.to_sym] = v
+      end
+
+      hash.replace(new_hash)
+    end
+
+    def check_presence!(obj, name = obj)
+      raise ArgumentError, "#{name} cannot be blank." if obj.nil? || (obj.is_a?(String) && obj.empty?)
     end
   end
 end
