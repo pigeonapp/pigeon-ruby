@@ -7,9 +7,6 @@ module Pigeon
     include HTTParty
 
     def initialize(config)
-      check_presence!(config.public_key, 'Pigeon Public Key')
-      check_presence!(config.private_key, 'Pigeon Private Key')
-
       @config = config
 
       self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
@@ -94,9 +91,9 @@ module Pigeon
     def process_contact_attributes(uid, attrs)
       symbolize_keys! attrs
 
-      check_presence!(uid, 'Customer ID')
-      check_presence!(attrs[:platforrm], 'Platform')
-      check_presence!(attrs[:token], 'Token')
+      check_presence!(attrs[:name], 'Name')
+      check_presence!(attrs[:value], 'Value')
+      check_presence!(attrs[:kind], 'Kind')
 
       attrs[:uid] = uid
     end
