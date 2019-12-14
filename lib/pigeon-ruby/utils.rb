@@ -1,4 +1,3 @@
-
 module Pigeon
   module Utils
     extend self
