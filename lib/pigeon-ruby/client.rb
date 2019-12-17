@@ -1,3 +1,4 @@
+require 'base64'
 require 'httparty'
 require 'openssl'
 require 'securerandom'
@@ -50,7 +51,8 @@ module Pigeon
       cipher = OpenSSL::Cipher::AES256.new :CBC
       cipher.encrypt
       cipher.key = OpenSSL::Digest::SHA256.digest @config.private_key
-      cipher.update(customer_id) + cipher.final
+      encrypted = cipher.update(customer_id) + cipher.final
+      Base64.urlsafe_encode64(encrypted)
     end
 
     private
