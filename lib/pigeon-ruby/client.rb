@@ -11,40 +11,34 @@ module Pigeon
       @config = config
 
       self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
-      self.class.headers({
+      self.class.headers(
         'X-Public-Key' => config.public_key,
         'X-Private-Key' => config.private_key
-      })
+      )
     end
 
     def deliver(message_identifier, parcels = nil)
-      self.class.post('/deliveries', {
-        body: {
-          message_identifier: message_identifier,
-          parcels: process_parcels(parcels)
-        }
-      })
+      self.class.post('/deliveries',
+                      body: {
+                        message_identifier: message_identifier,
+                        parcels: process_parcels(parcels)
+                      })
     end
 
     def track(event, data = {})
-      self.class.post('/event_logs', {
-        body: {
-          event: event,
-          data: data
-        }
-      })
+      self.class.post('/event_logs',
+                      body: {
+                        event: event,
+                        data: data
+                      })
     end
 
     def identify(attrs = {})
-      self.class.post('/customers', {
-        body: process_identify_attributes(attrs)
-      })
+      self.class.post('/customers', body: process_identify_attributes(attrs))
     end
 
     def add_contact(customer_id, attrs = {})
-      self.class.post('/contacts', {
-        body: process_contact_attributes(customer_id, attrs)
-      })
+      self.class.post('/contacts', body: process_contact_attributes(customer_id, attrs))
     end
 
     def generate_token(customer_id)
@@ -83,9 +77,7 @@ module Pigeon
 
       raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
 
-      if !attrs[:uid] && !attrs[:anonymous_uid]
-        attrs[:anonymous_uid] = generate_anonymous_uid
-      end
+      attrs[:anonymous_uid] = generate_anonymous_uid if !attrs[:uid] && !attrs[:anonymous_uid]
 
       attrs
     end
@@ -98,6 +90,7 @@ module Pigeon
       check_presence!(attrs[:kind], 'Kind')
 
       attrs[:uid] = uid
+      attrs
     end
 
     def generate_anonymous_uid

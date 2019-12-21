@@ -1,5 +1,4 @@
-
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pigeon-ruby/version'
 
@@ -9,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Pradeep Kumar']
   spec.email         = ['pradeep@keepworks.com']
 
-  spec.summary       = %q{Pigeon Ruby Library}
-  spec.description   = %q{Pigeon lets you easily manage your outbound email, push notifications and SMS. Visit https://pigeonapi.io for more details.}
+  spec.summary       = 'Pigeon Ruby Library'
+  spec.description   = 'Pigeon lets you easily manage your outbound email, push notifications and SMS. Visit https://pigeonapi.io for more details.'
   spec.homepage      = 'https://pigeonapp.io'
   spec.license       = 'MIT'
 
@@ -24,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rubocop', '~> 0.78.0'
 
   spec.add_dependency 'httparty', '~> 0.16'
 end
