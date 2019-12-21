@@ -73,6 +73,7 @@ module Pigeon
 
     def process_identify_attributes(attrs)
       symbolize_keys! attrs
+
       traits = attrs[:traits] || {}
 
       raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
