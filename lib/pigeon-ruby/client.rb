@@ -79,9 +79,9 @@ module Pigeon
 
     def process_identify_attributes(attrs)
       symbolize_keys! attrs
-      traits = attrs[:traits] || {}
+      extras = attrs[:extras] || {}
 
-      raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
+      raise ArgumentError, 'Extras must be a Hash' if !extras.is_a? Hash
 
       if !attrs[:uid] && !attrs[:anonymous_uid]
         attrs[:anonymous_uid] = generate_anonymous_uid
@@ -98,6 +98,7 @@ module Pigeon
       check_presence!(attrs[:kind], 'Kind')
 
       attrs[:uid] = uid
+      attrs
     end
 
     def generate_anonymous_uid
