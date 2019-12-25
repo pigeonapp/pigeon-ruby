@@ -21,7 +21,7 @@ module Pigeon
       self.class.post('/deliveries', {
         body: {
           message_identifier: message_identifier,
-          procecss_delivery_attributes(attrs)
+          process_delivery_attributes(attrs)
         }
       })
     end
@@ -57,7 +57,7 @@ module Pigeon
 
     private
 
-    def procecss_delivery_attributes(attrs)
+    def process_delivery_attributes(attrs)
       symbolize_keys! attrs
 
       check_presence!(attrs[:to], 'Recipient')
