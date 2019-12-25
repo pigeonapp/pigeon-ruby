@@ -20,8 +20,9 @@ module Pigeon
     def deliver(message_identifier, attrs)
       self.class.post('/deliveries', {
         body: {
-          message_identifier: message_identifier,
-          process_delivery_attributes(attrs)
+          process_delivery_attributes(attrs).merge({
+            message_identifier: message_identifier
+          })
         }
       })
     end
