@@ -17,11 +17,11 @@ module Pigeon
       })
     end
 
-    def deliver(message_identifier, parcels = nil)
+    def deliver(message_identifier, attrs)
       self.class.post('/deliveries', {
         body: {
           message_identifier: message_identifier,
-          parcels: process_parcels(parcels)
+          procecss_delivery_attributes(attrs)
         }
       })
     end
@@ -57,16 +57,18 @@ module Pigeon
 
     private
 
-    def process_parcels(parcels)
-      parcels = [parcels] if parcels.is_a? Hash
+    def procecss_delivery_attributes(attrs)
+      symbolize_keys! attrs
 
-      parcels.each do |parcel|
-        (parcel[:attachments] || []).each do |attachment|
-          next unless File.file?(attachment[:file])
+      check_presence!(attrs[:to], 'Recipient')
 
-          prepare_attachment_content(attachment)
-        end
+      (attrs[:attachments] || []).each do |attachment|
+        next unless File.file?(attachment[:file])
+
+        prepare_attachment_content(attachment)
       end
+
+      attrs
     end
 
     def prepare_attachment_content(attachment)
