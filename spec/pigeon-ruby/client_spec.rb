@@ -12,7 +12,7 @@ RSpec.describe Pigeon::Client do
     end
 
     it 'returns hash an error if traits are not a hash' do
-      expect { client.send(:process_identify_attributes, traits: '') }.to raise_error(ArgumentError)
+      expect { client.send(:process_identify_attributes, extras: '') }.to raise_error(ArgumentError)
     end
 
     it 'returns attributes with the correct values' do
