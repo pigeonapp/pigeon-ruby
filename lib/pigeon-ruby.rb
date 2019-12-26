@@ -11,8 +11,8 @@ module Pigeon
     @clients[client_name] = Pigeon::Client.new(config)
   end
 
-  def self.deliver(message_identifier, parcels = nil)
-    @clients[:default].deliver(message_identifier, parcels)
+  def self.deliver(message_identifier, attrs = {})
+    @clients[:default].deliver(message_identifier, attrs)
   end
 
   def self.track(event, data)

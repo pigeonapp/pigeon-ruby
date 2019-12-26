@@ -17,12 +17,12 @@ module Pigeon
       )
     end
 
-    def deliver(message_identifier, parcels = nil)
-      self.class.post('/deliveries',
-                      body: {
-                        message_identifier: message_identifier,
-                        parcels: process_parcels(parcels)
-                      })
+    def deliver(message_identifier, attrs)
+      self.class.post('/deliveries', {
+        body: process_delivery_attributes(attrs).merge({
+          message_identifier: message_identifier
+        })
+      })
     end
 
     def track(event, data = {})
@@ -51,16 +51,18 @@ module Pigeon
 
     private
 
-    def process_parcels(parcels)
-      parcels = [parcels] if parcels.is_a? Hash
+    def process_delivery_attributes(attrs)
+      symbolize_keys! attrs
 
-      parcels.each do |parcel|
-        (parcel[:attachments] || []).each do |attachment|
-          next unless File.file?(attachment[:file])
+      check_presence!(attrs[:to], 'Recipient')
 
-          prepare_attachment_content(attachment)
-        end
+      (attrs[:attachments] || []).each do |attachment|
+        next unless File.file?(attachment[:file])
+
+        prepare_attachment_content(attachment)
       end
+
+      attrs
     end
 
     def prepare_attachment_content(attachment)
@@ -73,10 +75,9 @@ module Pigeon
 
     def process_identify_attributes(attrs)
       symbolize_keys! attrs
+      extras = attrs[:extras] || {}
 
-      traits = attrs[:traits] || {}
-
-      raise ArgumentError, 'Traits must be a Hash' if !traits.is_a? Hash
+      raise ArgumentError, 'Extras must be a Hash' if !extras.is_a? Hash
 
       attrs[:anonymous_uid] = generate_anonymous_uid if !attrs[:uid] && !attrs[:anonymous_uid]
 
