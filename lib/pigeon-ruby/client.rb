@@ -25,12 +25,9 @@ module Pigeon
       })
     end
 
-    def track(event, data = {})
+    def track(attrs = {})
       self.class.post('/event_logs', {
-        body: {
-          event: event,
-          data: data
-        }
+        body: process_track_attributes(attrs)
       })
     end
 
@@ -78,10 +75,22 @@ module Pigeon
       attachment.delete(:file)
     end
 
+    def process_track_attributes(attrs)
+      symbolize_keys! attrs
+
+      check_presence!(attrs[:event], 'Event')
+      check_presence!(attrs[:customer_uid], 'Customer UID')
+
+      data = attrs[:data] || {}
+      raise ArgumentError, 'data must be a Hash' if !data.is_a? Hash
+
+      attrs
+    end
+
     def process_identify_attributes(attrs)
       symbolize_keys! attrs
-      extras = attrs[:extras] || {}
 
+      extras = attrs[:extras] || {}
       raise ArgumentError, 'Extras must be a Hash' if !extras.is_a? Hash
 
       if !attrs[:uid] && !attrs[:anonymous_uid]
