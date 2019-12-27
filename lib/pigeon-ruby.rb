@@ -16,7 +16,7 @@ module Pigeon
   end
 
   def self.track(attrs = {})
-    @clients[:default].track(event, data)
+    @clients[:default].track(attrs)
   end
 
   def self.identify(attrs = {})
