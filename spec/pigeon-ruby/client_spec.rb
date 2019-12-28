@@ -72,5 +72,35 @@ module Pigeon
         end
       end
     end
+
+    describe '#process_contact_attributes' do
+      it 'raises an error if uid is blank' do
+        expect { client.send(:process_contact_attributes, nil, {}) }.to raise_error(ArgumentError, 'UID cannot be blank.')
+      end
+
+      it 'raises an error if uid is present but contact value is blank' do
+        expect { client.send(:process_contact_attributes, 'uid', {}) }.to raise_error(ArgumentError, 'Contact value cannot be blank.')
+      end
+
+      it 'raises an error if uid and contact value is present but contact kind is blank' do
+        expect { client.send(:process_contact_attributes, 'uid', value: 'Contact Value') }.to raise_error(ArgumentError, 'Contact kind cannot be blank.')
+      end
+
+      context 'with valid params' do
+        let(:attributes) { client.send(:process_contact_attributes, 'uid', value: 'Contact Value', kind: 'Contact Kind') }
+
+        it 'sets the uid' do
+          expect(attributes[:uid]).to eq('uid')
+        end
+
+        it 'sets contact value' do
+          expect(attributes[:value]).to eq('Contact Value')
+        end
+
+        it 'sets contact kind' do
+          expect(attributes[:kind]).to eq('Contact Kind')
+        end
+      end
+    end
   end
 end

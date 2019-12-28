@@ -94,9 +94,9 @@ module Pigeon
     def process_contact_attributes(uid, attrs)
       symbolize_keys! attrs
 
-      check_presence!(attrs[:name], 'Name')
-      check_presence!(attrs[:value], 'Value')
-      check_presence!(attrs[:kind], 'Kind')
+      check_presence!(uid, 'UID')
+      check_presence!(attrs[:value], 'Contact value')
+      check_presence!(attrs[:kind], 'Contact kind')
 
       attrs[:uid] = uid
       attrs
