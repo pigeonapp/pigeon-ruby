@@ -19,6 +19,36 @@ module Pigeon
       end
     end
 
+    describe '#process_track_attributes' do
+      it 'raises an error if event is blank' do
+        expect { client.send(:process_track_attributes, {}) }.to raise_error(ArgumentError, 'Event cannot be blank.')
+      end
+
+      it 'raises an error if event is present but customer_uid is blank' do
+        expect { client.send(:process_track_attributes, event: 'test') }.to raise_error(ArgumentError, 'Customer UID cannot be blank.')
+      end
+
+      it 'raises an error if event and customer_uid is present but data is not a hash' do
+        expect { client.send(:process_track_attributes, event: 'event', customer_uid: 'uid', data: '') }.to raise_error(ArgumentError, 'data must be a Hash')
+      end
+
+      context 'with valid params' do
+        let(:attributes) { client.send(:process_track_attributes, event: 'event', customer_uid: 'uid', data: { name: 'Name' }) }
+
+        it 'sets event' do
+          expect(attributes[:event]).to eq('event')
+        end
+
+        it 'sets customer_uid' do
+          expect(attributes[:customer_uid]).to eq('uid')
+        end
+
+        it 'sets data hash' do
+          expect(attributes[:data]).to eq(name: 'Name')
+        end
+      end
+    end
+
     describe '#process_identify_attributes' do
       it 'generates anonymous_uid when both uid and anonymous_uid are not provided' do
         result = client.send(:process_identify_attributes, {})
