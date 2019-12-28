@@ -14,11 +14,10 @@ if RUBY_VERSION >= '2.3'
 
   RuboCop::RakeTask.new(:rubocop) do |task|
     task.patterns = ['lib/**/*.rb', 'spec/**/*.rb']
+    task.requires << 'rubocop-rspec'
   end
 
   default_tasks << :rubocop
 end
-
-default_tasks << :rubocop
 
 task default: default_tasks
