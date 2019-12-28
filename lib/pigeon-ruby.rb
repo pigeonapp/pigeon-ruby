@@ -15,8 +15,8 @@ module Pigeon
     @clients[:default].deliver(message_identifier, attrs)
   end
 
-  def self.track(event, data)
-    @clients[:default].track(event, data)
+  def self.track(attrs = {})
+    @clients[:default].track(attrs)
   end
 
   def self.identify(attrs = {})
