@@ -78,7 +78,7 @@ Pigeon.deliver('message-identifier', {
 
 After checking out the repo, run `bin/setup` to install dependencies and then `overcommit --install` to add hooks. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To ensure consistent code style, this project uses rubocop. You can run `bundle exec rake rubocop` to see the errors and `bundle exec rake rubocop:auto_correct` to automatically fix them.
+To ensure consistent code style, this project uses rubocop. You can run `rake rubocop` to see the errors and `rake rubocop:auto_correct` to automatically fix them.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
