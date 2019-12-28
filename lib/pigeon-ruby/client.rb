@@ -25,9 +25,7 @@ module Pigeon
     end
 
     def track(attrs = {})
-      self.class.post('/event_logs', {
-        body: process_track_attributes(attrs)
-      })
+      self.class.post('/event_logs', body: process_track_attributes(attrs))
     end
 
     def identify(attrs = {})

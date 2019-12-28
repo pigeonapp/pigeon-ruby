@@ -76,7 +76,7 @@ Pigeon.deliver('message-identifier', {
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies and then `overcommit --install` to add hooks. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To ensure consistent code style, this project uses rubocop. You can run `bundle exec rake rubocop` to see the errors and `bundle exec rake rubocop:auto_correct` to automatically fix them.
 
