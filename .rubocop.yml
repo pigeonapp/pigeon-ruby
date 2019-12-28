@@ -6,6 +6,9 @@ AllCops:
 Layout/LineLength:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: false
+
 Naming/FileName:
   Exclude:
     - lib/pigeon-ruby.rb # Gem name, added for easier Gemfile usage
