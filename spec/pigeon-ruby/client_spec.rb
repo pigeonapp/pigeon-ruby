@@ -102,5 +102,11 @@ module Pigeon
         end
       end
     end
+
+    describe '#generate_anonymous_uid' do
+      it 'returns a anonymous_uid' do
+        expect(client.send(:generate_anonymous_uid)).not_to be_nil
+      end
+    end
   end
 end
