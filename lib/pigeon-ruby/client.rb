@@ -11,36 +11,29 @@ module Pigeon
       @config = config
 
       self.class.base_uri(config.base_uri || 'https://api.pigeonapp.io/v1')
-      self.class.headers({
+      self.class.headers(
         'X-Public-Key' => config.public_key,
         'X-Private-Key' => config.private_key
-      })
+      )
     end
 
     def deliver(message_identifier, attrs)
-      self.class.post('/deliveries', {
-        body: process_delivery_attributes(attrs).merge({
-          message_identifier: message_identifier
-        })
-      })
+      self.class.post('/deliveries',
+                      body: process_delivery_attributes(attrs).merge(
+                        message_identifier: message_identifier
+                      ))
     end
 
     def track(attrs = {})
-      self.class.post('/event_logs', {
-        body: process_track_attributes(attrs)
-      })
+      self.class.post('/event_logs', body: process_track_attributes(attrs))
     end
 
     def identify(attrs = {})
-      self.class.post('/customers', {
-        body: process_identify_attributes(attrs)
-      })
+      self.class.post('/customers', body: process_identify_attributes(attrs))
     end
 
     def add_contact(customer_id, attrs = {})
-      self.class.post('/contacts', {
-        body: process_contact_attributes(customer_id, attrs)
-      })
+      self.class.post('/contacts', body: process_contact_attributes(customer_id, attrs))
     end
 
     def generate_token(customer_id)
@@ -93,9 +86,7 @@ module Pigeon
       extras = attrs[:extras] || {}
       raise ArgumentError, 'Extras must be a Hash' if !extras.is_a? Hash
 
-      if !attrs[:uid] && !attrs[:anonymous_uid]
-        attrs[:anonymous_uid] = generate_anonymous_uid
-      end
+      attrs[:anonymous_uid] = generate_anonymous_uid if !attrs[:uid] && !attrs[:anonymous_uid]
 
       attrs
     end
@@ -103,9 +94,9 @@ module Pigeon
     def process_contact_attributes(uid, attrs)
       symbolize_keys! attrs
 
-      check_presence!(attrs[:name], 'Name')
-      check_presence!(attrs[:value], 'Value')
-      check_presence!(attrs[:kind], 'Kind')
+      check_presence!(uid, 'UID')
+      check_presence!(attrs[:value], 'Contact value')
+      check_presence!(attrs[:kind], 'Contact kind')
 
       attrs[:uid] = uid
       attrs

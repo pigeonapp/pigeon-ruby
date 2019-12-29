@@ -3,7 +3,7 @@ require 'pigeon-ruby/config'
 require 'pigeon-ruby/client'
 
 module Pigeon
-  @clients = Hash.new
+  @clients = {}
 
   def self.configure(client_name = :default)
     yield config = Pigeon::Config.new

@@ -1,0 +1,23 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.3
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - lib/pigeon-ruby.rb # Gem name, added for easier Gemfile usage
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment: # This cop is designed to help upgrade to Ruby 3.0
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
