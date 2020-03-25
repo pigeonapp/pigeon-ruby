@@ -2,7 +2,6 @@ require 'base64'
 require 'httparty'
 require 'openssl'
 require 'securerandom'
-require 'uri'
 
 module Pigeon
   class Client
@@ -71,10 +70,8 @@ module Pigeon
         file = File.open(attachment_file)
         attachment[:content] = Base64.strict_encode64(file.read)
         attachment[:name] ||= File.basename(file, '.*')
-      elsif is_url?(attachment_file)
-        attachment[:content] = attachment_file
       else
-        raise ArgumentError, "#{attachment_file} is neither a valid `File` nor an `URL`"
+        attachment[:content] = attachment_file
       end
 
       attachment.delete(:file)
@@ -130,15 +127,6 @@ module Pigeon
 
     def check_presence!(obj, name = obj)
       raise ArgumentError, "#{name} cannot be blank." if obj.nil? || (obj.is_a?(String) && obj.empty?)
-    end
-
-    def is_url?(url)
-      return false if url.nil?
-
-      uri = URI(url)
-      uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
-    rescue URI::InvalidURIError
-      false
     end
   end
 end
