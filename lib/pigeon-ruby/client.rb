@@ -58,20 +58,22 @@ module Pigeon
 
       check_presence!(attrs[:to], 'Recipient')
 
-      (attrs[:attachments] || []).each do |attachment|
-        next unless File.file?(attachment[:file])
-
-        prepare_attachment_content(attachment)
-      end
+      (attrs[:attachments] || []).each { |attachment| prepare_attachment_content(attachment) }
 
       attrs
     end
 
     def prepare_attachment_content(attachment)
-      file = attachment[:file]
-      file = File.open(file) if file.is_a? String
-      attachment[:content] = Base64.strict_encode64(file.read)
-      attachment[:name] ||= File.basename(file, '.*')
+      attachment_file = attachment[:file]
+
+      if File.file?(attachment_file)
+        file = File.open(attachment_file)
+        attachment[:content] = Base64.strict_encode64(file.read)
+        attachment[:name] ||= File.basename(file, '.*')
+      else
+        attachment[:content] = attachment_file
+      end
+
       attachment.delete(:file)
     end
 
