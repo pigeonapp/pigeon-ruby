@@ -131,7 +131,7 @@ module Pigeon
 
     def send_request(method, path, options)
       if !!@config.stub
-        Net::HTTPResponse.new(method, 200, path)
+        Net::HTTPResponse.new(method, 200, {})
       else
         self.class.send(method, path, options)
       end
