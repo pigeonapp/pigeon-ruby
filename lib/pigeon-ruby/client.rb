@@ -18,7 +18,7 @@ module Pigeon
     end
 
     def deliver(message_identifier, attrs)
-      self.class.post('/deliveries', {
+      send_request(:post, '/deliveries', {
         body: process_delivery_attributes(attrs).merge({
           message_identifier: message_identifier
         })
@@ -26,19 +26,19 @@ module Pigeon
     end
 
     def track(attrs = {})
-      self.class.post('/event_logs', {
+      send_request(:post, '/event_logs', {
         body: process_track_attributes(attrs)
       })
     end
 
     def identify(attrs = {})
-      self.class.post('/customers', {
+      send_request(:post, '/customers', {
         body: process_identify_attributes(attrs)
       })
     end
 
     def add_contact(customer_id, attrs = {})
-      self.class.post('/contacts', {
+      send_request(:post, '/contacts', {
         body: process_contact_attributes(customer_id, attrs)
       })
     end
@@ -127,6 +127,14 @@ module Pigeon
 
     def check_presence!(obj, name = obj)
       raise ArgumentError, "#{name} cannot be blank." if obj.nil? || (obj.is_a?(String) && obj.empty?)
+    end
+
+    def send_request(method, route, options)
+      if !!@config.stub
+        HTTParty::Response 200, body: {}
+      else
+        self.class.send(method, route, options)
+      end
     end
   end
 end
