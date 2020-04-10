@@ -129,11 +129,11 @@ module Pigeon
       raise ArgumentError, "#{name} cannot be blank." if obj.nil? || (obj.is_a?(String) && obj.empty?)
     end
 
-    def send_request(method, route, options)
+    def send_request(method, path, options)
       if !!@config.stub
-        HTTParty::Response 200, body: {}
+        Net::HTTPResponse.new(method, 200, path)
       else
-        self.class.send(method, route, options)
+        self.class.send(method, path, options)
       end
     end
   end
