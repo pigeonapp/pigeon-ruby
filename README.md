@@ -88,7 +88,7 @@ You can use the stub option to cause all requests to be stubbed, making it easie
 Pigeon.configure do |config|
   .
   .
-  config.stub = Rails.env.test? || ENV['STUB'] # defaults to false
+  config.stub = Rails.env.test? # defaults to false
 end
 ```
 
