@@ -3,5 +3,6 @@ module Pigeon
     attr_accessor :base_uri
     attr_accessor :public_key
     attr_accessor :private_key
+    attr_accessor :stub
   end
 end
